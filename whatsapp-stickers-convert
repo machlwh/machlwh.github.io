@@ -32,12 +32,12 @@ border:1px solid #cccccc;
 display:none;
 }
 label{
-font-family:Courier;
+font-family:DFKai-SB;
 font-size:20px;
 }
 
 input{
-font-family:Courier;
+font-family:DFKai-SB;
 font-size:12px;
 }
 
