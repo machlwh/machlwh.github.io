@@ -58,7 +58,7 @@ font-size:12px;
   <td colspan="3"><br></td>
   </tr>
 <tr>
-<td width="100px"><label  for="tbIdentifier">Identifier: </label></td>
+<td width="100px"><label  for="tbIdentifier">識別代號 Identifier: </label></td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td><input   type="text" name="tbIdentifier" id="tbIdentifier"></td>
 </tr>
@@ -66,13 +66,13 @@ font-size:12px;
   <td colspan="1"><br></td>
   </tr>
 <tr>
-<td><label for="tbPack">Bundle Name: </label></td>
+<td><label for="tbPack">貼紙名稱 Bundle Name: </label></td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td><input   type="text" name="tbPack" id="tbPack"></td>
 </tr>
 <tr><td colspan="1"><br></td></tr>
 <tr>
-<td><label for="tbPublisher">Author: </label></td>
+<td><label for="tbPublisher">作者 Author: </label></td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td><input   type="text" name="tbPublisher" id="tbPublisher"></td>
 </tr>
@@ -80,17 +80,18 @@ font-size:12px;
 <td colspan="4"><br></td>
 </tr>
 <tr>
-<td><label for="btnTrayIcon">Tray Icon:</label></td>
+<td><label for="btnTrayIcon">圖示 Tray Icon:</label></td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td><input accept="image/*"   type="file" name="btnTrayIcon" id="btnTrayIcon"><br>
 <div id="trayiconcell"></div></td>
 </tr>
 <td colspan="1"><br></td>
 <tr>
-<td><label for="btnStickers">Stickers:</label></td>
+<td><label for="btnStickers">貼紙 Stickers:</label></td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td><input accept="image/*"  multiple type="file" name="btnStickers" id="btnStickers"></td>
 </tr>
+
 
 
 <tr>
@@ -107,7 +108,7 @@ font-size:12px;
 <div id="hiddenCanvas"></div>
 
 <br><br>
-<input  id="btnGenerate" onclick="genJSON()"  type="button" value="Generate JSON File">
+<input  id="btnGenerate" onclick="genJSON()"  type="button" value="撳我下載塊佬 Generate JSON File">
 
 
 </form>	
@@ -142,7 +143,7 @@ if ((document.getElementById("stickerBoard").childElementCount < 31) && (documen
 
 if ($("#cTrayIcon").length == 0) {
 
-alert("Please select tray icon...")
+alert("你未揀圖示喎 Please select tray icon...")
 
 } else{
 
@@ -201,7 +202,7 @@ download(strIdentifier+'.json',outJSON)
 
 
 }else{
-alert('Only 3-30 images are allowed!')
+alert('最少三張 最多三十張圖架咋！Only 3-30 images are allowed!')
 }
 
 }
