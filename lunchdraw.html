@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>午餐生成器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h3 {
+            margin-bottom: 10px;
+            border-bottom: 2px solid #343a40;
+            padding-bottom: 5px;
+        }
+
+        label {
+            display: block;
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        input[type="number"] {
+            width: 40px;
+            margin-left: 10px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            font-size: 25px;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+    
+        <div class="section">
+            <h3>選擇同事：</h3>
+            <label><input type="checkbox" name="colleague" value="Niles"> Niles</label>
+            <label><input type="checkbox" name="colleague" value="Mach"> Mach</label>
+            <label><input type="checkbox" name="colleague" value="Edward"> Edward</label>
+            <label><input type="checkbox" name="colleague" value="Marcus"> Marcus</label>
+        </div>
+        <div class="section">
+            <h3>午餐：</h3>
+            <div id="lunch-options">
+                <div>
+                    <label><input type="checkbox" name="lunch" value="牛肉飯" checked> 牛肉飯<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="手撕雞" checked> 手撕雞<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="大快活" checked> 大快活<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="麥當勞" checked> 麥當勞<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="茶記" checked> 茶記<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="百芳" checked> 百芳<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="車仔麵" checked> 車仔麵<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="兩餸飯" checked> 兩餸飯<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="燒味飯" checked> 燒味飯<input type="number" min="0" class="weight" placeholder="比重"></label>
+                </div>
+                <div>
+                    <label><input type="checkbox" name="lunch" value="飲茶" checked> 飲茶<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="茶餐廳" checked> 茶餐廳<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="西餐" checked> 西餐<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="中國菜" checked> 中國菜<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="台灣菜" checked> 台灣菜<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="日本菜" checked> 日本菜<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="越南菜" checked> 越南菜<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="泰國菜" checked> 泰國菜<input type="number" min="0" class="weight" placeholder="比重"></label>
+                    <label><input type="checkbox" name="lunch" value="The Corner" checked> The Corner<input type="number" min="0" class="weight" placeholder="比重"></label>
+                </div>
+            </div>
+        </div>
+        <button onclick="drawLunch()">抽籤</button>
+        <div id="result" class="section"></div>
+    </div>
+    <script>
+        document.querySelectorAll('input[name="colleague"]').forEach((checkbox) => {
+            checkbox.addEventListener('change', updateLunchOptions);
+        });
+
+        function updateLunchOptions() {
+            const selectedColleagues = Array.from(document.querySelectorAll('input[name="colleague"]:checked')).map(cb => cb.value);
+            const firstRowOptions = document.querySelectorAll('#lunch-options > div:first-child input[type="checkbox"]');
+            const secondRowOptions = document.querySelectorAll('#lunch-options > div:last-child input[type="checkbox"]');
+
+            if (selectedColleagues.includes('Edward') || selectedColleagues.includes('Marcus')) {
+                firstRowOptions.forEach(cb => cb.checked = false);
+                secondRowOptions.forEach(cb => cb.checked = true);
+            } else if (selectedColleagues.includes('Niles') || selectedColleagues.includes('Mach')) {
+                firstRowOptions.forEach(cb => cb.checked = true);
+                secondRowOptions.forEach(cb => cb.checked = false);
+            } else {
+                firstRowOptions.forEach(cb => cb.checked = true);
+                secondRowOptions.forEach(cb => cb.checked = true);
+            }
+        }
+
+        function drawLunch() {
+            const selectedLunches = Array.from(document.querySelectorAll('input[name="lunch"]:checked'));
+            if (selectedLunches.length === 0) {
+                alert("請選擇至少一個午餐選項。");
+                return;
+            }
+
+            const weightedLunches = [];
+            const totalWeight = selectedLunches.reduce((total, lunch) => {
+                const weight = parseInt(lunch.nextElementSibling.value) || 1;
+                for (let i = 0; i < weight; i++) {
+                    weightedLunches.push(lunch.value);
+                }
+                return total + weight;
+            }, 0);
+
+            // 如果沒有設定比重，預設為平均比重
+            if (totalWeight === 0) {
+                selectedLunches.forEach(lunch => {
+                    weightedLunches.push(lunch.value);
+                });
+            }
+
+            const randomIndex = Math.floor(Math.random() * weightedLunches.length);
+            const chosenLunch = weightedLunches[randomIndex];
+
+            document.getElementById('result').innerText = `選中的午餐是：${chosenLunch}`;
+        }
+    </script>
+<!-- <img src="https://memeprod.ap-south-1.linodeobjects.com/user-gif-post/1696696649256.gif" alt="世界末日啦" width="32%" height="auto" style="bottom: 50%; left: 0;  position: fixed">>
+<img src="https://memeprod.ap-south-1.linodeobjects.com/user-maker-thumbnail/f45af11069a0fa50d5f437989f9363eb.gif" alt="扣你五十分" width="32%" height="auto" style="bottom: 50%; right: 0;  position: fixed">
+<img src="https://media.tenor.com/d_pAgLYyDmgAAAAM/%E5%8D%87%E5%95%8A-%E9%A6%99%E6%B8%AF.gif" alt="大時代" width="32%" height="auto" style="bottom: 0%; right: 0;  position: fixed">
+<img src="https://cdn.discuss.com.hk/t/5e18b5/f/320x0/https://media.giphy.com/media/nuRXXyy020kta/giphy.gif" alt="大時代" width="32%" height="auto" style="bottom: 0%; left: 0;  position: fixed"> -->
+</body>
+
+</html>
