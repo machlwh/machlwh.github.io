@@ -119,6 +119,7 @@
     </div>
     <script>
         let diceRolls = 1;
+        let previousLunch = null;
 
         document.querySelectorAll('input[name="colleague"]').forEach((checkbox) => {
             checkbox.addEventListener('change', updateLunchOptions);
@@ -171,9 +172,14 @@
 
             let currentRoll = 0;
             const interval = setInterval(() => {
-                const randomIndex = Math.floor(Math.random() * weightedLunches.length);
-                const chosenLunch = weightedLunches[randomIndex];
+                let chosenLunch;
+                do {
+                    const randomIndex = Math.floor(Math.random() * weightedLunches.length);
+                    chosenLunch = weightedLunches[randomIndex];
+                } while (chosenLunch === previousLunch);
+
                 document.getElementById('result').innerText = `選中的午餐是：${chosenLunch}`;
+                previousLunch = chosenLunch;
                 currentRoll++;
                 if (currentRoll >= diceRolls) {
                     clearInterval(interval);
