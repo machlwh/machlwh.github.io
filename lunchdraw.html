@@ -65,6 +65,13 @@
             font-weight: bold;
             color: #28a745;
         }
+
+        #dice-result {
+            font-size: 18px;
+            font-weight: bold;
+            color: #dc3545;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -105,10 +112,14 @@
                 </div>
             </div>
         </div>
+        <button onclick="rollDice()">骰子</button>
+        <div id="dice-result" class="section"></div>
         <button onclick="drawLunch()">抽籤</button>
         <div id="result" class="section"></div>
     </div>
     <script>
+        let diceRolls = 1;
+
         document.querySelectorAll('input[name="colleague"]').forEach((checkbox) => {
             checkbox.addEventListener('change', updateLunchOptions);
         });
@@ -128,6 +139,11 @@
                 firstRowOptions.forEach(cb => cb.checked = true);
                 secondRowOptions.forEach(cb => cb.checked = true);
             }
+        }
+
+        function rollDice() {
+            diceRolls = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('dice-result').innerText = `骰子結果：${diceRolls} 次`;
         }
 
         function drawLunch() {
@@ -153,10 +169,18 @@
                 });
             }
 
-            const randomIndex = Math.floor(Math.random() * weightedLunches.length);
-            const chosenLunch = weightedLunches[randomIndex];
-
-            document.getElementById('result').innerText = `選中的午餐是：${chosenLunch}`;
+            let currentRoll = 0;
+            const interval = setInterval(() => {
+                const randomIndex = Math.floor(Math.random() * weightedLunches.length);
+                const chosenLunch = weightedLunches[randomIndex];
+                document.getElementById('result').innerText = `選中的午餐是：${chosenLunch}`;
+                currentRoll++;
+                if (currentRoll >= diceRolls) {
+                    clearInterval(interval);
+                    diceRolls = 1;  // 重設骰子結果
+                    document.getElementById('dice-result').innerText = '';
+                }
+            }, 500);
         }
     </script>
 <!-- <img src="https://memeprod.ap-south-1.linodeobjects.com/user-gif-post/1696696649256.gif" alt="世界末日啦" width="32%" height="auto" style="bottom: 50%; left: 0;  position: fixed">>
