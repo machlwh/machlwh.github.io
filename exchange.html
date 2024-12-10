@@ -50,6 +50,12 @@
             font-size: 24px;
             font-weight: bold;
         }
+        #volume-control {
+            margin-top: 10px;
+        }
+        #volume {
+            width: 50px; 
+        }
         @media (max-width: 600px) {
             input[type="text"], button {
                 width: 100%;
@@ -69,6 +75,11 @@
     <div id="results"></div>
 
     <audio id="pick-sound" src="marksix.mp3" preload="auto"></audio>
+
+    <div id="volume-control">
+        <label for="volume">音量:</label>
+        <input type="range" id="volume" min="0" max="1" step="0.1" value="1" onchange="setVolume(this.value)">
+    </div>
 
     <script>
         const participants = [];
@@ -111,7 +122,6 @@
             resultsDiv.innerHTML = '';
             const unpickedNames = participants.filter(name => !pickedNames.has(name));
 
-            // Check if all names have been picked
             if (unpickedNames.length === 0) {
                 resultsDiv.innerHTML = '<p>抽曬啦！</p>';
                 document.getElementById('pick-button').style.display = 'none';
@@ -120,7 +130,6 @@
 
             document.getElementById('pick-sound').play();
 
-            // Start the lottery effect
             let intervalId;
             const iterations = 20; 
             let count = 0;
@@ -138,6 +147,10 @@
                     resultsDiv.innerHTML = `<h3>${pickedName} has been picked!</h3>`;
                 }
             }, 200); 
+        }
+
+        function setVolume(value) {
+            document.getElementById('pick-sound').volume = value;
         }
     </script>
 
