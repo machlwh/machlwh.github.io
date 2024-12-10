@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聖誕派對交換禮物</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        #participant-list {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: calc(100% - 22px);
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #219653;
+        }
+        .delete-button {
+            padding: 5px 10px;
+            background-color: #e74c3c;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .delete-button:hover {
+            background-color: #c0392b;
+        }
+        #results {
+            margin-top: 20px;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            input[type="text"], button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Christmas Present Exchange</h1>
+    <div>
+        <input type="text" id="participant-name" placeholder="參加者名字">
+        <button onclick="addParticipant()">撳我加人！</button>
+    </div>
+    <div id="participant-list"></div>
+    <button onclick="pickNames()" id="pick-button" style="display:none;">Pick Names</button>
+    <div id="results"></div>
+
+    <script>
+        const participants = [];
+        const pickedNames = new Set();
+        let nextPick = null; // To track the next required pick
+        const specialPairs = ["Ray Ray", "Tammy"]; // Names that require special handling
+
+        function addParticipant() {
+            const nameInput = document.getElementById('participant-name');
+            const name = nameInput.value.trim();
+            if (name && !participants.includes(name)) {
+                participants.push(name);
+                nameInput.value = '';
+                updateParticipantList();
+                document.getElementById('pick-button').style.display = participants.length > 1 ? 'block' : 'none';
+            } else {
+                alert("佢已經JOIN咗啦，唔係比佢抽兩次咁着數吓話？");
+            }
+        }
+
+        function updateParticipantList() {
+            const listDiv = document.getElementById('participant-list');
+            listDiv.innerHTML = '<h3>Participants:</h3>' + participants.map(name => 
+                `<p>${name} <button class="delete-button" onclick="removeParticipant('${name}')">Delete</button></p>`
+            ).join('');
+        }
+
+        function removeParticipant(name) {
+            const index = participants.indexOf(name);
+            if (index > -1) {
+                participants.splice(index, 1);
+                pickedNames.delete(name); // Remove from picked names if necessary
+                updateParticipantList();
+                document.getElementById('pick-button').style.display = participants.length > 1 ? 'block' : 'none';
+            }
+        }
+
+        function pickNames() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            const unpickedNames = participants.filter(name => !pickedNames.has(name));
+
+            // Check if all names have been picked
+            if (unpickedNames.length === 0) {
+                resultsDiv.innerHTML = '<p>抽曬啦！</p>';
+                document.getElementById('pick-button').style.display = 'none';
+                return;
+            }
+
+            let pickedName;
+            if (nextPick) {
+                pickedName = nextPick;
+                nextPick = null; // Reset next pick after using it
+            } else {
+                const randomIndex = Math.floor(Math.random() * unpickedNames.length);
+                pickedName = unpickedNames[randomIndex];
+            }
+
+            // Special logic for Ray Ray and Tammy
+            if (specialPairs.includes(pickedName)) {
+                nextPick = specialPairs.find(name => name !== pickedName); // Set the next pick
+            }
+
+            pickedNames.add(pickedName);
+            resultsDiv.innerHTML = `<h3>${pickedName} has been picked!</h3>`;
+
+            // Disable the option to pick the special pair again until the next round
+            if (pickedNames.has("Ray Ray") && pickedNames.has("Tammy")) {
+                nextPick = null; // Reset if both have been picked
+            }
+        }
+    </script>
+
+</body>
+</html>
