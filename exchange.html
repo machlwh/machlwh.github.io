@@ -119,6 +119,9 @@
                 return;
             }
 
+            // Play sound effect immediately when button is clicked
+            document.getElementById('pick-sound').play();
+
             // Start the lottery effect
             let intervalId;
             const iterations = 20; // Number of times to show changing names
@@ -136,9 +139,8 @@
                     const pickedName = unpickedNames[finalIndex];
                     pickedNames.add(pickedName);
                     resultsDiv.innerHTML = `<h3>${pickedName} has been picked!</h3>`;
-                    document.getElementById('pick-sound').play(); // Play sound
                 }
-            }, 200); 
+            }, 100); // Change name every 100 milliseconds
         }
     </script>
 
