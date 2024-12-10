@@ -68,14 +68,13 @@
     <button onclick="pickNames()" id="pick-button" style="display:none;">抽獎啦！</button>
     <div id="results"></div>
 
-    <!-- Audio element for sound effect -->
     <audio id="pick-sound" src="marksix.mp3" preload="auto"></audio>
 
     <script>
         const participants = [];
         const pickedNames = new Set();
-        let nextPick = null; // To track the next required pick
-        const specialPairs = ["Ray Ray", "Tammy"]; // Names that require special handling
+        let nextPick = null; 
+        const specialPairs = ["Ray Ray", "Tammy"]; 
 
         function addParticipant() {
             const nameInput = document.getElementById('participant-name');
@@ -101,7 +100,7 @@
             const index = participants.indexOf(name);
             if (index > -1) {
                 participants.splice(index, 1);
-                pickedNames.delete(name); // Remove from picked names if necessary
+                pickedNames.delete(name);
                 updateParticipantList();
                 document.getElementById('pick-button').style.display = participants.length > 1 ? 'block' : 'none';
             }
@@ -119,12 +118,11 @@
                 return;
             }
 
-            // Play sound effect immediately when button is clicked
             document.getElementById('pick-sound').play();
 
             // Start the lottery effect
             let intervalId;
-            const iterations = 20; // Number of times to show changing names
+            const iterations = 20; 
             let count = 0;
 
             intervalId = setInterval(() => {
@@ -134,13 +132,12 @@
 
                 if (count >= iterations) {
                     clearInterval(intervalId);
-                    // Final pick
                     const finalIndex = Math.floor(Math.random() * unpickedNames.length);
                     const pickedName = unpickedNames[finalIndex];
                     pickedNames.add(pickedName);
                     resultsDiv.innerHTML = `<h3>${pickedName} has been picked!</h3>`;
                 }
-            }, 100); // Change name every 100 milliseconds
+            }, 200); 
         }
     </script>
 
