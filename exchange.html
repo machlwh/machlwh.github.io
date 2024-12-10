@@ -67,7 +67,7 @@
     <div id="results"></div>
 
     <!-- Audio element for sound effect -->
-    <audio id="add-sound" src="marksix.mp3" preload="auto"></audio>
+    <audio id="pick-sound" src="path/to/your/sound-effect.mp3" preload="auto"></audio>
 
     <script>
         const participants = [];
@@ -83,9 +83,6 @@
                 nameInput.value = '';
                 updateParticipantList();
                 document.getElementById('pick-button').style.display = participants.length > 1 ? 'block' : 'none';
-
-                // Play sound effect when the button is pressed
-                document.getElementById('add-sound').play();
             } else {
                 alert("佢已經JOIN咗啦，唔係比佢抽兩次咁着數吓話？");
             }
@@ -142,6 +139,9 @@
             if (pickedNames.has("Ray Ray") && pickedNames.has("Tammy")) {
                 nextPick = null; // Reset if both have been picked
             }
+
+            // Play sound effect when names are picked
+            document.getElementById('pick-sound').play();
         }
     </script>
 
