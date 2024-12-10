@@ -47,6 +47,8 @@
         #results {
             margin-top: 20px;
             text-align: center;
+            font-size: 24px;
+            font-weight: bold;
         }
         @media (max-width: 600px) {
             input[type="text"], button {
@@ -63,7 +65,7 @@
         <button onclick="addParticipant()">撳我加人！</button>
     </div>
     <div id="participant-list"></div>
-    <button onclick="pickNames()" id="pick-button" style="display:none;">Pick Names</button>
+    <button onclick="pickNames()" id="pick-button" style="display:none;">抽獎啦！</button>
     <div id="results"></div>
 
     <!-- Audio element for sound effect -->
@@ -108,7 +110,6 @@
         function pickNames() {
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = '';
-
             const unpickedNames = participants.filter(name => !pickedNames.has(name));
 
             // Check if all names have been picked
@@ -118,30 +119,26 @@
                 return;
             }
 
-            let pickedName;
-            if (nextPick) {
-                pickedName = nextPick;
-                nextPick = null; // Reset next pick after using it
-            } else {
+            // Start the lottery effect
+            let intervalId;
+            const iterations = 20; // Number of times to show changing names
+            let count = 0;
+
+            intervalId = setInterval(() => {
                 const randomIndex = Math.floor(Math.random() * unpickedNames.length);
-                pickedName = unpickedNames[randomIndex];
-            }
+                resultsDiv.innerHTML = `<h3>${unpickedNames[randomIndex]}</h3>`;
+                count++;
 
-            // Special logic for Ray Ray and Tammy
-            if (specialPairs.includes(pickedName)) {
-                nextPick = specialPairs.find(name => name !== pickedName); // Set the next pick
-            }
-
-            pickedNames.add(pickedName);
-            resultsDiv.innerHTML = `<h3>${pickedName} has been picked!</h3>`;
-
-            // Disable the option to pick the special pair again until the next round
-            if (pickedNames.has("Ray Ray") && pickedNames.has("Tammy")) {
-                nextPick = null; // Reset if both have been picked
-            }
-
-            // Play sound effect when names are picked
-            document.getElementById('pick-sound').play();
+                if (count >= iterations) {
+                    clearInterval(intervalId);
+                    // Final pick
+                    const finalIndex = Math.floor(Math.random() * unpickedNames.length);
+                    const pickedName = unpickedNames[finalIndex];
+                    pickedNames.add(pickedName);
+                    resultsDiv.innerHTML = `<h3>${pickedName} has been picked!</h3>`;
+                    document.getElementById('pick-sound').play(); // Play sound
+                }
+            }, 200); // Change name every 100 milliseconds
         }
     </script>
 
