@@ -1,5 +1,3 @@
-<!--你地做咩偷睇我啲Code-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,6 +66,9 @@
     <button onclick="pickNames()" id="pick-button" style="display:none;">Pick Names</button>
     <div id="results"></div>
 
+    <!-- Audio element for sound effect -->
+    <audio id="add-sound" src="marksix.mp3" preload="auto"></audio>
+
     <script>
         const participants = [];
         const pickedNames = new Set();
@@ -82,6 +83,9 @@
                 nameInput.value = '';
                 updateParticipantList();
                 document.getElementById('pick-button').style.display = participants.length > 1 ? 'block' : 'none';
+
+                // Play sound effect when the button is pressed
+                document.getElementById('add-sound').play();
             } else {
                 alert("佢已經JOIN咗啦，唔係比佢抽兩次咁着數吓話？");
             }
