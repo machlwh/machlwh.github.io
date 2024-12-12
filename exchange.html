@@ -50,12 +50,6 @@
             font-size: 24px;
             font-weight: bold;
         }
-        #volume-control {
-            margin-top: 10px;
-        }
-        #volume {
-            width: 50px; 
-        }
         @media (max-width: 600px) {
             input[type="text"], button {
                 width: 100%;
@@ -79,8 +73,6 @@
     <script>
         const participants = [];
         const pickedNames = new Set();
-        let nextPick = null; 
-        const specialPairs = ["Ray Ray", "Tammy"]; 
 
         function addParticipant() {
             const nameInput = document.getElementById('participant-name');
@@ -117,6 +109,7 @@
             resultsDiv.innerHTML = '';
             const unpickedNames = participants.filter(name => !pickedNames.has(name));
 
+            // Check if all names have been picked
             if (unpickedNames.length === 0) {
                 resultsDiv.innerHTML = '<p>抽曬啦！</p>';
                 document.getElementById('pick-button').style.display = 'none';
@@ -125,31 +118,27 @@
 
             document.getElementById('pick-sound').play();
 
-        let intervalId;
-        const duration = 60000; // 10 seconds in milliseconds
-        const intervalTime = 200; // Change name every 200 milliseconds
-        const iterations = duration / intervalTime; // Calculate iterations
+            // Start the lottery effect for 6 seconds
+            let intervalId;
+            const duration = 6000; // 6 seconds in milliseconds
+            const intervalTime = 200; // Change name every 200 milliseconds
+            const iterations = duration / intervalTime; // Calculate iterations
 
-        let count = 0;
+            let count = 0;
 
-        intervalId = setInterval(() => {
-            const randomIndex = Math.floor(Math.random() * unpickedNames.length);
-            resultsDiv.innerHTML = `<h3>${unpickedNames[randomIndex]}</h3>`;
-            count++;
+            intervalId = setInterval(() => {
+                const randomIndex = Math.floor(Math.random() * unpickedNames.length);
+                resultsDiv.innerHTML = `<h3>${unpickedNames[randomIndex]}</h3>`;
+                count++;
 
-            if (count >= iterations) {
-                clearInterval(intervalId);
-                const finalIndex = Math.floor(Math.random() * unpickedNames.length);
-                const pickedName = unpickedNames[finalIndex];
-                pickedNames.add(pickedName);
-                resultsDiv.innerHTML = `<h3>${pickedName} has been picked!</h3>`;
-            }
-        }, intervalTime); 
-    }
-
-
-        function setVolume(value) {
-            document.getElementById('pick-sound').volume = value;
+                if (count >= iterations) {
+                    clearInterval(intervalId);
+                    const finalIndex = Math.floor(Math.random() * unpickedNames.length);
+                    const pickedName = unpickedNames[finalIndex];
+                    pickedNames.add(pickedName);
+                    resultsDiv.innerHTML = `<h3>${pickedName} has been picked!</h3>`;
+                }
+            }, intervalTime); 
         }
     </script>
 
