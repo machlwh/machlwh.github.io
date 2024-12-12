@@ -73,6 +73,7 @@
     <script>
         const participants = [];
         const pickedNames = new Set();
+        let lastPicked = null; // Track the last picked name
 
         function addParticipant() {
             const nameInput = document.getElementById('participant-name');
@@ -89,9 +90,10 @@
 
         function updateParticipantList() {
             const listDiv = document.getElementById('participant-list');
-            listDiv.innerHTML = '<h3>Participants:</h3>' + participants.map(name => 
-                `<p>${name} <button class="delete-button" onclick="removeParticipant('${name}')">Delete</button></p>`
-            ).join('');
+            listDiv.innerHTML = '<h3>Participants:</h3>' + participants.map(name => {
+                const isPicked = pickedNames.has(name);
+                return `<p style="text-decoration: ${isPicked ? 'line-through' : 'none'};">${name} <button class="delete-button" onclick="removeParticipant('${name}')">Delete</button></p>`;
+            }).join('');
         }
 
         function removeParticipant(name) {
@@ -133,12 +135,35 @@
 
                 if (count >= iterations) {
                     clearInterval(intervalId);
-                    const finalIndex = Math.floor(Math.random() * unpickedNames.length);
-                    const pickedName = unpickedNames[finalIndex];
-                    pickedNames.add(pickedName);
+                    let pickedName;
+
+                    // Check for special pair conditions
+                    if (lastPicked === "Ray Ray") {
+                        pickedName = "Tammy"; // Next must be Tammy
+                    } else if (lastPicked === "Tammy") {
+                        pickedName = "Ray Ray"; // Next must be Ray Ray
+                    } else {
+                        // Pick a random name from the remaining unpicked names
+                        const finalIndex = Math.floor(Math.random() * unpickedNames.length);
+                        pickedName = unpickedNames[finalIndex];
+                    }
+
+                    // Ensure the picked name is actually unpicked
+                    if (!pickedNames.has(pickedName) && unpickedNames.includes(pickedName)) {
+                        pickedNames.add(pickedName);
+                        lastPicked = pickedName; // Update the last picked name
+                    } else {
+                        // If the picked name is already picked, choose another
+                        const finalIndex = Math.floor(Math.random() * unpickedNames.length);
+                        pickedName = unpickedNames[finalIndex];
+                        pickedNames.add(pickedName);
+                        lastPicked = pickedName; // Update the last picked name
+                    }
+
+                    updateParticipantList(); // Update the list to show strikethrough
                     resultsDiv.innerHTML = `<h3>${pickedName} has been picked!</h3>`;
                 }
-            }, intervalTime); 
+            }, intervalTime);
         }
     </script>
 
